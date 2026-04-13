@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import logoImg from "@/assets/lemaz-logo.png";
 
 const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [phase, setPhase] = useState<"logo" | "exit">("logo");
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("exit"), 2800);
-    const t2 = setTimeout(onComplete, 3800);
+    const t1 = setTimeout(() => setPhase("exit"), 3200);
+    const t2 = setTimeout(onComplete, 4200);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [onComplete]);
 
   return (
     <AnimatePresence>
-      {phase !== "exit" ? null : null}
       <motion.div
         className="fixed inset-0 z-[9999] flex items-center justify-center bg-charcoal"
         initial={{ opacity: 1 }}
@@ -27,28 +27,28 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <motion.h1
-            className="text-5xl md:text-7xl font-display font-bold animate-shimmer"
+          <motion.img
+            src={logoImg}
+            alt="Le'maz Beauty Salon & Spa"
+            className="w-64 md:w-80 h-auto drop-shadow-[0_0_30px_hsla(42,68%,52%,0.4)]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            Le'maz
-          </motion.h1>
-          <motion.p
-            className="text-gold-light font-accent text-lg md:text-xl tracking-ultra-wide uppercase"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.8 }}
-          >
-            Beauty Salon & Spa
-          </motion.p>
+          />
           <motion.div
-            className="w-16 h-[1px] gold-gradient"
+            className="w-20 h-[1px] gold-gradient"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 1.5, duration: 1, ease: "easeInOut" }}
           />
+          <motion.p
+            className="text-gold-light/60 font-accent text-sm tracking-ultra-wide uppercase"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 0.8 }}
+          >
+            Amaziah Square, Muthiga — Nairobi
+          </motion.p>
         </motion.div>
       </motion.div>
     </AnimatePresence>
