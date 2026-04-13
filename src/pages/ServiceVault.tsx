@@ -101,19 +101,25 @@ const ServiceVault = () => {
 
   return (
     <main className="pt-24 pb-20 lg:pb-0">
-      <section className="section-padding bg-charcoal text-primary-foreground text-center">
-        <ScrollReveal>
-          <p className="text-gold font-accent tracking-ultra-wide uppercase text-sm mb-2">Our Expertise</p>
-          <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">The Service Vault</h1>
-          <p className="text-primary-foreground/60 max-w-lg mx-auto">Every service delivered with Le'maz precision, care, and premium products.</p>
-        </ScrollReveal>
+      {/* Hero — Unique angled design */}
+      <section className="relative py-20 md:py-28 bg-charcoal text-primary-foreground text-center overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <img src={braidingImg} alt="" className="w-full h-full object-cover" />
+        </div>
+        <div className="relative z-10 px-6">
+          <ScrollReveal>
+            <p className="text-gold font-accent tracking-ultra-wide uppercase text-sm mb-2">Our Expertise</p>
+            <h1 className="text-4xl md:text-6xl font-display font-bold mb-4">The Service Vault</h1>
+            <p className="text-primary-foreground/50 max-w-lg mx-auto">Every service delivered with Le'maz precision, care, and premium products.</p>
+          </ScrollReveal>
+        </div>
       </section>
 
-      <section className="section-padding bg-background">
+      <section className="px-6 md:px-12 lg:px-24 py-16 md:py-24 bg-background">
         <div className="max-w-5xl mx-auto space-y-4">
           {categories.map((cat, i) => (
             <ScrollReveal key={cat.name} delay={i * 0.05}>
-              <div className="border border-border rounded-2xl overflow-hidden bg-card">
+              <div className="border border-border rounded-2xl overflow-hidden bg-card hover:border-gold/20 transition-colors">
                 <button
                   onClick={() => setOpenIdx(openIdx === i ? -1 : i)}
                   className="w-full flex items-center gap-4 p-4 md:p-6 text-left hover:bg-accent/50 transition-colors"
@@ -137,10 +143,15 @@ const ServiceVault = () => {
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden"
                     >
-                      <div className="px-4 md:px-6 pb-6 space-y-2">
+                      <div className="px-4 md:px-6 pb-6 space-y-1">
                         <div className="h-px bg-border mb-4" />
-                        {cat.services.map((s) => (
-                          <div key={s.name} className="flex items-center justify-between py-3 px-4 rounded-xl hover:bg-accent/50 transition-colors">
+                        {cat.services.map((s, j) => (
+                          <div
+                            key={s.name}
+                            className={`flex items-center justify-between py-3 px-4 rounded-xl transition-colors ${
+                              j % 2 === 0 ? "bg-accent/30" : "hover:bg-accent/30"
+                            }`}
+                          >
                             <span className="text-sm font-medium">{s.name}</span>
                             <span className="text-sm text-gold font-semibold whitespace-nowrap ml-4">{s.price}</span>
                           </div>
