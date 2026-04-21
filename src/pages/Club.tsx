@@ -3,14 +3,18 @@ import ScrollReveal from "@/components/ScrollReveal";
 import bridalImg from "@/assets/bridal-bundle.jpg";
 import spaImg from "@/assets/spa-service.jpg";
 
+// Membership pricing built from the official catalogue:
+// Essential = 2× Medium Knotless (2,500) + 2× Plain Pedi (1,500) = 8,000 → bundle 6,500 (save 1,500)
+// Signature = 2× Medium Knotless + 2× Pedi-Gel (2,000) + 1× Face Beat (1,500) = 10,500 → bundle 8,500
+// Royal = 4× Medium Knotless + 2× Advanced Pedi (2,500) + 2× Mani-Gel (1,200) + 2× Full Glam (2,500) = 22,400 → bundle 17,500
 const memberships = [
   {
     name: "Essential Glow",
-    price: "KES 3,500",
+    price: "KES 6,500",
     period: "/month",
     features: [
-      "2 Braiding Sessions (Medium)",
-      "2 Basic Pedicures",
+      "2 Knotless Braid Sessions (Medium)",
+      "2 Plain Pedicures",
       "10% off all other services",
       "Priority booking",
     ],
@@ -18,29 +22,29 @@ const memberships = [
   },
   {
     name: "Le'maz Signature",
-    price: "KES 6,500",
+    price: "KES 8,500",
     period: "/month",
     features: [
-      "2 Braiding Sessions (any style)",
-      "2 Gel Pedicures",
-      "1 Facial Treatment",
+      "2 Knotless Braid Sessions (Medium)",
+      "2 Pedi-Gel Treatments",
+      "1 Face Beat Makeup Session",
       "15% off all other services",
       "Priority booking + free consultations",
-      "Complimentary hot oil treatment",
+      "Complimentary hair oiling",
     ],
     highlight: true,
   },
   {
     name: "Royal Radiance",
-    price: "KES 10,000",
+    price: "KES 17,500",
     period: "/month",
     features: [
-      "Unlimited braiding (up to 4 sessions)",
-      "4 Gel Pedicures + 2 Manicures",
-      "2 Facial Treatments",
-      "20% off makeup & wig services",
+      "4 Knotless Braid Sessions (Medium)",
+      "2 Advanced Pedicures + 2 Mani-Gels",
+      "2 Full Glam Makeup Sessions",
+      "20% off wig & lock services",
       "VIP priority + dedicated stylist",
-      "Monthly scalp treatment included",
+      "Monthly leave-in treatment included",
       "Exclusive member events",
     ],
     highlight: false,
@@ -120,11 +124,11 @@ const Club = () => (
           <ScrollReveal>
             <Sparkles size={22} className="text-gold mb-3" />
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground max-w-lg mb-4 leading-tight">The Bridal Glow Bundle</h2>
-            <p className="text-primary-foreground/60 max-w-md mb-6 leading-relaxed">
-              Your dream wedding deserves the ultimate beauty experience. Our curated bridal package includes luxury hair styling, full glam makeup, spa day pampering, and a trial session.
+            <p className="text-primary-foreground/70 max-w-md mb-6 leading-relaxed">
+              Your dream wedding deserves the ultimate beauty experience. Our curated bridal package includes luxury hair styling, full glam makeup with trial, and a pre-wedding spa day.
             </p>
             <ul className="space-y-2 mb-8">
-              {["Bridal Hair Styling (any style)", "Full Glam Bridal Makeup + Trial", "Pre-Wedding Facial & Spa Day", "Bridal Party Discounts (15% off)"].map((f) => (
+              {["Bridal Hair Styling (any catalogue style)", "Full Glam Bridal Makeup + Trial Session", "Pre-Wedding Advanced Pedicure & Manicure", "Bridal Party Discounts (15% off)"].map((f) => (
                 <li key={f} className="flex items-center gap-2 text-primary-foreground/70 text-sm">
                   <Check size={14} className="text-gold flex-shrink-0" /> {f}
                 </li>
@@ -132,12 +136,12 @@ const Club = () => (
             </ul>
             <div className="flex items-baseline gap-3 mb-8">
               <span className="text-4xl font-display font-bold gold-text-gradient">KES 15,000</span>
-              <span className="text-primary-foreground/40 text-sm line-through">KES 20,000</span>
+              <span className="text-primary-foreground/40 text-sm line-through">KES 18,500</span>
             </div>
             <a
               href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27m%20interested%20in%20the%20Bridal%20Glow%20Bundle"
               target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gold text-primary-foreground font-medium text-sm tracking-wider uppercase rounded-full hover:bg-gold-dark transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gold text-charcoal font-semibold text-sm tracking-wider uppercase rounded-full hover:bg-gold-light transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
             >
               Inquire Now <ArrowRight size={16} />
             </a>
@@ -153,17 +157,17 @@ const Club = () => (
           <Repeat size={28} className="mx-auto text-gold mb-4" />
           <h2 className="text-3xl md:text-4xl font-display font-semibold mb-4">Monthly Maintenance Plan</h2>
           <p className="text-muted-foreground max-w-lg mx-auto mb-10">
-            Stay consistently stunning with our subscription plan — 2 braiding sessions + 2 pedicures every month at a discounted rate. Save up to 25% compared to individual bookings.
+            Stay consistently stunning — 2 medium knotless braids + 2 plain pedicures every month at a discounted bundle rate. Save vs. individual bookings.
           </p>
           <div className="inline-flex items-baseline gap-2 bg-card rounded-2xl px-10 py-5 border border-border shadow-sm">
-            <span className="text-4xl font-display font-bold gold-text-gradient">KES 3,500</span>
-            <span className="text-muted-foreground text-sm">/month (save KES 1,100)</span>
+            <span className="text-4xl font-display font-bold gold-text-gradient">KES 6,500</span>
+            <span className="text-muted-foreground text-sm">/month (save KES 1,500)</span>
           </div>
           <div className="mt-10">
             <a
               href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20subscribe%20to%20the%20Monthly%20Maintenance%20Plan"
               target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gold text-primary-foreground text-sm font-medium tracking-wider uppercase rounded-full hover:bg-gold-dark transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gold text-charcoal text-sm font-semibold tracking-wider uppercase rounded-full hover:bg-gold-light transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
             >
               Subscribe via WhatsApp <ArrowRight size={16} />
             </a>
