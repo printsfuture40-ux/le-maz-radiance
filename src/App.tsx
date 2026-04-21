@@ -9,19 +9,27 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import MobileNav from "@/components/MobileNav";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import ServiceVault from "./pages/ServiceVault";
 import Portfolio from "./pages/Portfolio";
 import About from "./pages/About";
 import Club from "./pages/Club";
 import Contact from "./pages/Contact";
+import Products from "./pages/Products";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const SPLASH_KEY = "lemaz_splash_shown";
+
 const App = () => {
-  const [splashDone, setSplashDone] = useState(false);
-  const handleSplashComplete = useCallback(() => setSplashDone(true), []);
+  const initial = typeof window !== "undefined" && sessionStorage.getItem(SPLASH_KEY) === "1";
+  const [splashDone, setSplashDone] = useState(initial);
+  const handleSplashComplete = useCallback(() => {
+    sessionStorage.setItem(SPLASH_KEY, "1");
+    setSplashDone(true);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -30,11 +38,13 @@ const App = () => {
         <Sonner />
         {!splashDone && <SplashScreen onComplete={handleSplashComplete} />}
         <BrowserRouter>
+          <ScrollToTop />
           <Header />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/services" element={<ServiceVault />} />
             <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/products" element={<Products />} />
             <Route path="/about" element={<About />} />
             <Route path="/club" element={<Club />} />
             <Route path="/contact" element={<Contact />} />
