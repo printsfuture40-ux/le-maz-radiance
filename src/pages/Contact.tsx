@@ -2,9 +2,28 @@ import { Phone, MapPin, Clock, ArrowRight, Mail } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import salonImg from "@/assets/salon-interior.jpg";
 
+const InstagramIcon = ({ size = 18 }: { size?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
+
+const TikTokIcon = ({ size = 18 }: { size?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.42a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.01z" />
+  </svg>
+);
+
+// Embed for "A Square Mall, Waiyaki Way, Muthiga (Rungiri)" (PMXP+H9M).
+const MAP_EMBED_URL =
+  "https://www.google.com/maps?q=A+Square+Mall+Muthiga+Waiyaki+Way+Rungiri&hl=en&z=17&output=embed";
+const MAP_DIRECTIONS_URL =
+  "https://www.google.com/maps/dir/?api=1&destination=A+Square+Mall+Muthiga+Waiyaki+Way+Rungiri";
+
 const Contact = () => (
   <main className="pt-24 pb-20 lg:pb-0">
-    {/* Hero — Unique warm tone */}
     <section className="relative py-20 md:py-28 bg-charcoal text-primary-foreground text-center overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <img src={salonImg} alt="" className="w-full h-full object-cover" />
@@ -13,7 +32,9 @@ const Contact = () => (
         <ScrollReveal>
           <p className="text-gold font-accent tracking-ultra-wide uppercase text-sm mb-2">Get in Touch</p>
           <h1 className="text-4xl md:text-6xl font-display font-bold mb-4">Contact Us</h1>
-          <p className="text-primary-foreground/50 max-w-lg mx-auto">We'd love to hear from you. Book your appointment or just say hello.</p>
+          <p className="text-primary-foreground/60 max-w-lg mx-auto">
+            We'd love to hear from you. Book your appointment or just say hello.
+          </p>
         </ScrollReveal>
       </div>
     </section>
@@ -26,46 +47,65 @@ const Contact = () => (
               <h2 className="text-2xl md:text-3xl font-display font-semibold mb-8">Visit Le'maz</h2>
               <div className="space-y-6">
                 {[
-                  { icon: MapPin, label: "Location", value: "Amaziah Square, Muthiga, Nairobi, Kenya" },
+                  { icon: MapPin, label: "Muthiga Branch", value: "A Square Mall, Waiyaki Way, Muthiga (Rungiri), Nairobi" },
+                  { icon: MapPin, label: "Nyeri Branch", value: "Coming Soon — stay tuned for our next location." },
                   { icon: Clock, label: "Hours", value: "Monday – Saturday: 8:00 AM – 8:00 PM\nSunday: 10:00 AM – 6:00 PM" },
-                  { icon: Phone, label: "Phone", value: "+254 746 580 502" },
-                  { icon: Mail, label: "Email", value: "info@lemazbeauty.co.ke" },
-                ].map(({ icon: Icon, label, value }) => (
+                  { icon: Phone, label: "Phone", value: "+254 746 580 502", href: "tel:+254746580502" },
+                  { icon: Mail, label: "Email", value: "info@lemazbeauty.co.ke", href: "mailto:info@lemazbeauty.co.ke" },
+                ].map(({ icon: Icon, label, value, href }) => (
                   <div key={label} className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center flex-shrink-0">
                       <Icon size={20} className="text-gold" />
                     </div>
                     <div>
                       <p className="font-display font-semibold text-sm mb-1">{label}</p>
-                      <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">{value}</p>
+                      {href ? (
+                        <a href={href} className="text-sm text-muted-foreground hover:text-gold transition-colors">{value}</a>
+                      ) : (
+                        <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">{value}</p>
+                      )}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <a
-              href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
-              target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gold text-primary-foreground text-sm font-medium tracking-wider uppercase rounded-full hover:bg-gold-dark transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
-            >
-              Book via WhatsApp <ArrowRight size={16} />
-            </a>
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-gold text-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-gold-light transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
+              >
+                Book via WhatsApp <ArrowRight size={14} />
+              </a>
+              <a href="https://www.instagram.com/lemaz_beauty" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                className="w-12 h-12 rounded-full border border-gold/40 flex items-center justify-center text-gold hover:bg-gold hover:text-charcoal transition-all">
+                <InstagramIcon size={18} />
+              </a>
+              <a href="https://www.tiktok.com/@evetinachi" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
+                className="w-12 h-12 rounded-full border border-gold/40 flex items-center justify-center text-gold hover:bg-gold hover:text-charcoal transition-all">
+                <TikTokIcon size={18} />
+              </a>
+            </div>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={0.2}>
-          <div className="rounded-[2rem] overflow-hidden shadow-2xl h-[400px] lg:h-full min-h-[400px] border border-border">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8!2d36.72!3d-1.25!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMcKwMTUnMDAuMCJTIDM2wrA0MycxMi4wIkU!5e0!3m2!1sen!2ske!4v1"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Le'maz Beauty Salon location"
-            />
+          <div className="space-y-3">
+            <div className="rounded-[2rem] overflow-hidden shadow-2xl h-[420px] lg:h-[520px] border border-border">
+              <iframe
+                src={MAP_EMBED_URL}
+                width="100%" height="100%"
+                style={{ border: 0 }}
+                allowFullScreen loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Le'maz Beauty Salon — A Square Mall, Muthiga"
+              />
+            </div>
+            <a href={MAP_DIRECTIONS_URL} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs tracking-wider uppercase text-gold hover:gap-3 transition-all">
+              Get Directions <ArrowRight size={14} />
+            </a>
           </div>
         </ScrollReveal>
       </div>
