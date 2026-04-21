@@ -8,6 +8,7 @@ const navLinks = [
   { label: "Home", path: "/" },
   { label: "Service Vault", path: "/services" },
   { label: "Portfolio", path: "/portfolio" },
+  { label: "Products", path: "/products" },
   { label: "About", path: "/about" },
   { label: "Le'maz Club", path: "/club" },
   { label: "Contact", path: "/contact" },
@@ -20,22 +21,27 @@ const Header = () => {
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
+    handler();
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
   useEffect(() => setOpen(false), [location]);
 
+  // Always-visible navbar: solid charcoal at top of any page → guarantees contrast
+  // on every background (light, dark, or image hero). Slight gold border on scroll.
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      scrolled ? "bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-sm" : "bg-transparent"
-    }`}>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-charcoal/95 backdrop-blur-xl ${
+        scrolled ? "shadow-lg border-b border-gold/20" : "border-b border-transparent"
+      }`}
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
-        <Link to="/" className="flex items-center">
-          <img src={logoImg} alt="Le'maz Beauty" className="h-12 md:h-14 w-auto" />
+        <Link to="/" className="flex items-center" aria-label="Le'maz Beauty home">
+          <img src={logoImg} alt="Le'maz Beauty Salon & Spa" className="h-11 md:h-12 w-auto" />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-7">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -43,7 +49,7 @@ const Header = () => {
               className={`text-xs tracking-ultra-wide uppercase transition-colors duration-300 ${
                 location.pathname === link.path
                   ? "text-gold font-medium"
-                  : scrolled ? "text-foreground/70 hover:text-gold" : "text-primary-foreground/80 hover:text-gold"
+                  : "text-primary-foreground/80 hover:text-gold"
               }`}
             >
               {link.label}
@@ -55,12 +61,16 @@ const Header = () => {
           href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden lg:inline-flex px-6 py-2.5 bg-gold text-primary-foreground text-xs font-medium tracking-wider uppercase rounded-full hover:bg-gold-dark transition-colors"
+          className="hidden lg:inline-flex px-6 py-2.5 bg-gold text-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-gold-light transition-colors"
         >
           Book Now
         </a>
 
-        <button onClick={() => setOpen(!open)} className={`lg:hidden ${scrolled ? "text-foreground" : "text-primary-foreground"}`}>
+        <button
+          onClick={() => setOpen(!open)}
+          className="lg:hidden text-primary-foreground"
+          aria-label="Toggle menu"
+        >
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
@@ -68,7 +78,7 @@ const Header = () => {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="lg:hidden bg-charcoal/98 backdrop-blur-xl"
+            className="lg:hidden bg-charcoal/98 backdrop-blur-xl border-t border-gold/20"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -91,7 +101,7 @@ const Header = () => {
                 href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 px-6 py-3 bg-gold text-primary-foreground text-sm font-medium tracking-wider uppercase rounded-full text-center"
+                className="mt-2 px-6 py-3 bg-gold text-charcoal text-sm font-semibold tracking-wider uppercase rounded-full text-center"
               >
                 Book Now
               </a>
