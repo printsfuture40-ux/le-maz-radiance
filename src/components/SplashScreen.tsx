@@ -2,6 +2,17 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import logoImg from "@/assets/lemaz-logo.png";
 
+// Preload the LCP logo as early as the module is parsed (before React mounts).
+if (typeof document !== "undefined" && !document.getElementById("lemaz-logo-preload")) {
+  const link = document.createElement("link");
+  link.id = "lemaz-logo-preload";
+  link.rel = "preload";
+  link.as = "image";
+  link.href = logoImg;
+  (link as HTMLLinkElement & { fetchPriority?: string }).fetchPriority = "high";
+  document.head.appendChild(link);
+}
+
 const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [phase, setPhase] = useState<"logo" | "exit">("logo");
 
@@ -23,9 +34,9 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
       >
         <motion.div
           className="flex flex-col items-center gap-6"
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
         >
           <motion.img
             src={logoImg}
@@ -33,9 +44,8 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
             fetchPriority="high"
             decoding="async"
             className="w-64 md:w-80 h-auto drop-shadow-[0_0_30px_hsla(42,68%,52%,0.4)]"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
           />
           <motion.div
             className="w-20 h-[1px] gold-gradient"
