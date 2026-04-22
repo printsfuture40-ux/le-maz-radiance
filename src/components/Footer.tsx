@@ -137,7 +137,7 @@ const Footer = () => (
         </div>
       </div>
 
-      <div className="mt-12 pt-8 border-t border-primary-foreground/10 text-center text-xs text-primary-foreground/40">
+      <div className="mt-12 pt-8 border-t border-primary-foreground/10 text-center text-xs text-primary-foreground/70">
         © {new Date().getFullYear()} Le'maz Beauty Salon & Spa. All rights reserved.
       </div>
     </div>
