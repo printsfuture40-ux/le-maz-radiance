@@ -30,6 +30,8 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
           <motion.img
             src={logoImg}
             alt="Le'maz Beauty Salon & Spa"
+            fetchPriority="high"
+            decoding="async"
             className="w-64 md:w-80 h-auto drop-shadow-[0_0_30px_hsla(42,68%,52%,0.4)]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
