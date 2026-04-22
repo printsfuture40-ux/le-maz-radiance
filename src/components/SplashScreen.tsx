@@ -6,8 +6,8 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [phase, setPhase] = useState<"logo" | "exit">("logo");
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("exit"), 3200);
-    const t2 = setTimeout(onComplete, 4200);
+    const t1 = setTimeout(() => setPhase("exit"), 1800);
+    const t2 = setTimeout(onComplete, 2600);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [onComplete]);
 
