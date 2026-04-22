@@ -258,7 +258,7 @@ const Index = () => (
           href="https://share.google/1T3rZm6GNVBYVOB9w"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-xs tracking-wider uppercase text-gold hover:gap-3 transition-all"
+          className="inline-flex items-center gap-2 text-xs tracking-wider uppercase text-[hsl(var(--gold-dark))] hover:gap-3 transition-all"
         >
           Read All Reviews on Google <ArrowRight size={14} />
         </a>
