@@ -9,7 +9,7 @@ if (typeof document !== "undefined" && !document.getElementById("lemaz-logo-prel
   link.rel = "preload";
   link.as = "image";
   link.href = logoImg;
-  (link as HTMLLinkElement & { fetchPriority?: string }).fetchPriority = "high";
+  link.setAttribute("fetchpriority", "high");
   document.head.appendChild(link);
 }
 
@@ -17,8 +17,9 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [phase, setPhase] = useState<"logo" | "exit">("logo");
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("exit"), 1800);
-    const t2 = setTimeout(onComplete, 2600);
+    // ~5s total: 4.2s hold + 0.8s fade-out
+    const t1 = setTimeout(() => setPhase("exit"), 4200);
+    const t2 = setTimeout(onComplete, 5000);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [onComplete]);
 
@@ -41,7 +42,7 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
           <motion.img
             src={logoImg}
             alt="Le'maz Beauty Salon & Spa"
-            fetchPriority="high"
+            {...({ fetchpriority: "high" } as Record<string, string>)}
             decoding="async"
             className="w-64 md:w-80 h-auto drop-shadow-[0_0_30px_hsla(42,68%,52%,0.4)]"
             initial={{ opacity: 1, y: 0 }}
@@ -59,7 +60,7 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
             animate={{ opacity: 1 }}
             transition={{ delay: 2, duration: 0.8 }}
           >
-            Amaziah Square, Muthiga — Nairobi
+            A Square Mall, Muthiga — Nairobi
           </motion.p>
         </motion.div>
       </motion.div>

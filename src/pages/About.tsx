@@ -33,7 +33,7 @@ const About = () => (
         <ScrollReveal delay={0.2}>
           <h2 className="text-3xl md:text-4xl font-display font-semibold mb-6 leading-tight">Polished. Elegant. Modern.</h2>
           <div className="space-y-4 text-muted-foreground leading-relaxed">
-            <p>Le'maz Beauty Salon & Spa was born from a deep passion for beauty and the belief that everyone deserves to feel extraordinary. Located at Amaziah Square in Muthiga, Nairobi, we've built a sanctuary where artistry meets self-care.</p>
+            <p>Le'maz Beauty Salon & Spa was born from a deep passion for beauty and the belief that everyone deserves to feel extraordinary. Located at A Square Mall, Waiyaki Way in Muthiga (Rungiri), Nairobi, we've built a sanctuary where artistry meets self-care.</p>
             <p>Our team of skilled artisans specializes in authentic African braiding, luxury wig installations, makeup artistry, nail services, and rejuvenating spa treatments. We use only premium products and techniques that honour your natural beauty.</p>
             <p>From the moment you walk through our doors, you're family. We listen, we craft, and we deliver — transformations that make you feel confident, radiant, and truly yourself.</p>
           </div>
