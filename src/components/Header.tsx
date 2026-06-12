@@ -38,7 +38,7 @@ const Header = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
         <Link to="/" className="flex items-center" aria-label="Le'maz Beauty home">
-          <img src={logoImg} alt="Le'maz Beauty Salon & Spa" fetchPriority="high" decoding="async" width={176} height={48} className="h-11 md:h-12 w-auto" />
+          <img src={logoImg} alt="Le'maz Beauty Salon & Spa" {...({ fetchpriority: "high" } as Record<string, string>)} decoding="async" width={176} height={48} className="h-11 md:h-12 w-auto" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-7">
