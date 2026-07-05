@@ -12,3 +12,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://lemaz-radiance.lovable.app/sitemap.xml
+
