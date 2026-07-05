@@ -8,38 +8,49 @@ import nailImg from "@/assets/nail-service.jpg";
 import kidsImg from "@/assets/kids-service.jpg";
 import bridalImg from "@/assets/bridal-bundle.jpg";
 import salonImg from "@/assets/salon-interior.jpg";
-import spaImg from "@/assets/spa-service.jpg";
 import twistsImg from "@/assets/portfolio-twists.jpg";
 import fulaniImg from "@/assets/portfolio-fulani.jpg";
 import pedicureImg from "@/assets/portfolio-pedicure.jpg";
 import facialImg from "@/assets/portfolio-facial.jpg";
 import locsImg from "@/assets/portfolio-locs.jpg";
+import cornrowsImg from "@/assets/portfolio-cornrows.jpg";
+import stilettoNailsImg from "@/assets/portfolio-nails-stiletto.jpg";
+import glamWigImg from "@/assets/portfolio-glam-wig.jpg";
+import editorialImg from "@/assets/portfolio-editorial.jpg";
+import bridalRedImg from "@/assets/portfolio-bridal-red.jpg";
+import loungeImg from "@/assets/salon-lounge.jpg";
 
 const categories = ["All", "Braiding", "Wigs & Weaves", "Makeup", "Nails", "Kids", "Bridal", "Spa"] as const;
 
-// Curated portfolio — strict cap of 2 images per category per client spec.
+// Curated portfolio — every entry is a unique image; no asset appears twice.
 const portfolio = [
-  // Braiding (2)
+  // Braiding (3)
   { src: braidingImg, cat: "Braiding", title: "Knotless Box Braids" },
   { src: twistsImg, cat: "Braiding", title: "Spring Twist Crown" },
-  // Wigs & Weaves (2)
+  { src: cornrowsImg, cat: "Braiding", title: "Sculpted Cornrow Updo" },
+  // Wigs & Weaves (3)
   { src: fulaniImg, cat: "Wigs & Weaves", title: "Honey Highlight Wig" },
   { src: wigImg, cat: "Wigs & Weaves", title: "Frontal Wig Install" },
+  { src: glamWigImg, cat: "Wigs & Weaves", title: "Silk Press Body Wave" },
   // Makeup (2)
   { src: makeupImg, cat: "Makeup", title: "Full Glam Beat" },
-  { src: bridalImg, cat: "Makeup", title: "Soft Editorial Glam" },
+  { src: editorialImg, cat: "Makeup", title: "Soft Editorial Glam" },
   // Nails (2)
   { src: nailImg, cat: "Nails", title: "Glam Gel Manicure" },
-  { src: pedicureImg, cat: "Nails", title: "French Tip Pedi" },
-  // Kids (1 — only one available)
+  { src: stilettoNailsImg, cat: "Nails", title: "Stiletto Chrome Set" },
+  // Kids (1)
   { src: kidsImg, cat: "Kids", title: "Kids Curls & Pigtails" },
   // Bridal (2)
   { src: bridalImg, cat: "Bridal", title: "Bridal Glow Look" },
-  { src: locsImg, cat: "Bridal", title: "Bridesmaid Braids" },
-  // Spa (2)
-  { src: facialImg, cat: "Spa", title: "Le'maz Studio Vibes" },
-  { src: salonImg, cat: "Spa", title: "Inside the Salon" },
+  { src: bridalRedImg, cat: "Bridal", title: "Bridesmaid Statement Braids" },
+  // Spa (3)
+  { src: facialImg, cat: "Spa", title: "Glow Facial Ritual" },
+  { src: pedicureImg, cat: "Spa", title: "French Tip Pedicure" },
+  { src: locsImg, cat: "Spa", title: "Loc Retwist & Care" },
 ];
+
+// Interior/environment shots kept for hero backgrounds only.
+export const interiorShots = [salonImg, loungeImg];
 
 const Portfolio = () => {
   const [filter, setFilter] = useState<string>("All");
