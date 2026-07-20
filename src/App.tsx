@@ -8,7 +8,7 @@ import SplashScreen from "@/components/SplashScreen";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import MobileNav from "@/components/MobileNav";
+
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 
@@ -55,7 +55,6 @@ const App = () => {
           </Suspense>
           <Footer />
           <WhatsAppButton />
-          <MobileNav />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
