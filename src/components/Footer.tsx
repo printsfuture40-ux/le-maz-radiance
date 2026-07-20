@@ -42,7 +42,7 @@ const WhatsAppIcon = ({ size = 18 }: { size?: number }) => (
 );
 
 const Footer = () => (
-  <footer className="bg-charcoal text-primary-foreground hidden lg:block">
+  <footer className="bg-charcoal text-primary-foreground">
     <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24 py-16 md:py-20">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div>
