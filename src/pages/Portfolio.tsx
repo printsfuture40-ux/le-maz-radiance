@@ -5,59 +5,47 @@ import braidingImg from "@/assets/braiding-service.jpg";
 import wigImg from "@/assets/wig-service.jpg";
 import makeupImg from "@/assets/makeup-service.jpg";
 import nailImg from "@/assets/nail-service.jpg";
-import kidsImg from "@/assets/kids-service.jpg";
 import bridalImg from "@/assets/bridal-bundle.jpg";
-import salonImg from "@/assets/salon-interior.jpg";
 import twistsImg from "@/assets/portfolio-twists.jpg";
 import fulaniImg from "@/assets/portfolio-fulani.jpg";
-import pedicureImg from "@/assets/portfolio-pedicure.jpg";
-import facialImg from "@/assets/portfolio-facial.jpg";
 import locsImg from "@/assets/portfolio-locs.jpg";
 import cornrowsImg from "@/assets/portfolio-cornrows.jpg";
 import stilettoNailsImg from "@/assets/portfolio-nails-stiletto.jpg";
 import glamWigImg from "@/assets/portfolio-glam-wig.jpg";
 import editorialImg from "@/assets/portfolio-editorial.jpg";
 import bridalRedImg from "@/assets/portfolio-bridal-red.jpg";
-import loungeImg from "@/assets/salon-lounge.jpg";
+import pedicureImg from "@/assets/portfolio-pedicure.jpg";
 
-const categories = ["All", "Braiding", "Wigs & Weaves", "Makeup", "Nails", "Kids", "Bridal", "Spa"] as const;
+const categories = ["All", "Braiding", "Wigs & Locks", "Nails", "Bridal & Editorial"] as const;
 
-// Curated portfolio — every entry is a unique image; no asset appears twice.
+// Only category-accurate, authentic Le'maz photography. No forced fillers.
 const portfolio = [
-  // Braiding (3)
-  { src: braidingImg, cat: "Braiding", title: "Knotless Box Braids" },
-  { src: twistsImg, cat: "Braiding", title: "Spring Twist Crown" },
-  { src: cornrowsImg, cat: "Braiding", title: "Sculpted Cornrow Updo" },
-  // Wigs & Weaves (3)
-  { src: fulaniImg, cat: "Wigs & Weaves", title: "Honey Highlight Wig" },
-  { src: wigImg, cat: "Wigs & Weaves", title: "Frontal Wig Install" },
-  { src: glamWigImg, cat: "Wigs & Weaves", title: "Silk Press Body Wave" },
-  // Makeup (2)
-  { src: makeupImg, cat: "Makeup", title: "Full Glam Beat" },
-  { src: editorialImg, cat: "Makeup", title: "Soft Editorial Glam" },
-  // Nails (2)
-  { src: nailImg, cat: "Nails", title: "Glam Gel Manicure" },
-  { src: stilettoNailsImg, cat: "Nails", title: "Stiletto Chrome Set" },
-  // Kids (1)
-  { src: kidsImg, cat: "Kids", title: "Kids Curls & Pigtails" },
-  // Bridal (2)
-  { src: bridalImg, cat: "Bridal", title: "Bridal Glow Look" },
-  { src: bridalRedImg, cat: "Bridal", title: "Bridesmaid Statement Braids" },
-  // Spa (3)
-  { src: facialImg, cat: "Spa", title: "Glow Facial Ritual" },
-  { src: pedicureImg, cat: "Spa", title: "French Tip Pedicure" },
-  { src: locsImg, cat: "Spa", title: "Loc Retwist & Care" },
+  // Braiding
+  { src: braidingImg, cat: "Braiding", title: "Sculpted Cornrow Bun" },
+  { src: cornrowsImg, cat: "Braiding", title: "Feed-in Cornrow Updo" },
+  { src: fulaniImg, cat: "Braiding", title: "Knotless Long Braids" },
+  // Wigs & Locks
+  { src: wigImg, cat: "Wigs & Locks", title: "Braided Bun Install" },
+  { src: locsImg, cat: "Wigs & Locks", title: "Faux Locs Portrait" },
+  { src: twistsImg, cat: "Wigs & Locks", title: "Honey Faux Locs" },
+  { src: glamWigImg, cat: "Wigs & Locks", title: "Long Braided Extensions" },
+  // Nails
+  { src: nailImg, cat: "Nails", title: "Stiletto Chrome Set" },
+  { src: stilettoNailsImg, cat: "Nails", title: "Monochrome Almond Tips" },
+  { src: pedicureImg, cat: "Nails", title: "Classic Red Manicure" },
+  // Bridal & Editorial
+  { src: makeupImg, cat: "Bridal & Editorial", title: "Soft Glam Waves" },
+  { src: bridalImg, cat: "Bridal & Editorial", title: "Bridal Braided Length" },
+  { src: editorialImg, cat: "Bridal & Editorial", title: "Editorial Bare Glow" },
+  { src: bridalRedImg, cat: "Bridal & Editorial", title: "Statement Bridesmaid Braids" },
 ];
-
-// Interior/environment shots kept for hero backgrounds only.
-export const interiorShots = [salonImg, loungeImg];
 
 const Portfolio = () => {
   const [filter, setFilter] = useState<string>("All");
   const filtered = filter === "All" ? portfolio : portfolio.filter((p) => p.cat === filter);
 
   return (
-    <main className="pt-24 pb-20 lg:pb-0">
+    <main className="pt-24 pb-20">
       <section className="relative py-20 md:py-28 bg-charcoal text-primary-foreground text-center overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <img src={fulaniImg} alt="" className="w-full h-full object-cover" />
@@ -67,7 +55,7 @@ const Portfolio = () => {
             <p className="text-gold font-accent tracking-ultra-wide uppercase text-sm mb-2">Our Work</p>
             <h1 className="text-4xl md:text-6xl font-display font-bold mb-4">Portfolio</h1>
             <p className="text-primary-foreground/60 max-w-lg mx-auto">
-              Every look tells a story. Browse a curated selection of our recent transformations.
+              Every look tells a story. Real clients. Real craft. Curated selections from our recent transformations.
             </p>
           </ScrollReveal>
         </div>
