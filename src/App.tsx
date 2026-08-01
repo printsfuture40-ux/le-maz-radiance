@@ -42,22 +42,26 @@ const App = () => {
         <Sonner />
         {!splashDone && <SplashScreen onComplete={handleSplashComplete} />}
         <BrowserRouter>
-          <ScrollToTop />
-          <Header />
-          <Suspense fallback={<div className="min-h-screen bg-background" />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/services" element={<ServiceVault />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/club" element={<Club />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-          <Footer />
-          <WhatsAppButton />
+          <BookingProvider>
+            <ScrollToTop />
+            <Header />
+            <Suspense fallback={<div className="min-h-screen bg-background" />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/services" element={<ServiceVault />} />
+                <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/club" element={<Club />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/admin/bookings" element={<AdminBookings />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+            <Footer />
+            <WhatsAppButton />
+          </BookingProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
