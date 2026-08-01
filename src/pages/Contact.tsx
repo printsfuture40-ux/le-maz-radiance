@@ -71,13 +71,13 @@ const Contact = () => (
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <a
-                href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
-                target="_blank" rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => openBooking()}
                 className="inline-flex items-center gap-2 px-7 py-3.5 bg-gold text-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-gold-light transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
               >
-                Book via WhatsApp <ArrowRight size={14} />
-              </a>
+                Book Appointment <ArrowRight size={14} />
+              </button>
               <a href="https://www.instagram.com/lemaz_beauty" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
                 className="w-12 h-12 rounded-full border border-gold/40 flex items-center justify-center text-gold hover:bg-gold hover:text-charcoal transition-all">
                 <InstagramIcon size={18} />
