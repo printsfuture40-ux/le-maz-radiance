@@ -33,6 +33,7 @@ const categories = catalog.map((c) => ({
 const ServiceVault = () => {
   // -1 → all categories collapsed by default per client spec.
   const [openIdx, setOpenIdx] = useState<number>(-1);
+  const { open: openBooking } = useBooking();
 
   return (
     <main className="pt-24 pb-20 lg:pb-0">
@@ -91,27 +92,27 @@ const ServiceVault = () => {
                       <div className="px-4 md:px-6 pb-6 space-y-1">
                         <div className="h-px bg-border mb-4" />
                         {cat.services.map((s, j) => (
-                          <div
+                          <button
                             key={s.name}
-                            className={`flex items-center justify-between gap-4 py-3 px-4 rounded-xl transition-colors ${
-                              j % 2 === 0 ? "bg-accent/30" : "hover:bg-accent/30"
+                            type="button"
+                            onClick={() => openBooking([s.name])}
+                            aria-label={`Book ${s.name}`}
+                            className={`w-full text-left flex items-center justify-between gap-4 py-3 px-4 rounded-xl transition-colors ${
+                              j % 2 === 0 ? "bg-accent/30 hover:bg-accent/60" : "hover:bg-accent/30"
                             }`}
                           >
                             <span className="text-sm font-medium">{s.name}</span>
                             <span className="text-sm text-gold font-semibold whitespace-nowrap">{s.price}</span>
-                          </div>
+                          </button>
                         ))}
                         <div className="pt-5">
-                          <a
-                            href={`https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20a%20${encodeURIComponent(
-                              cat.name
-                            )}%20service`}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <button
+                            type="button"
+                            onClick={() => openBooking()}
                             className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-gold-light transition-colors"
                           >
                             Book {cat.name}
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </motion.div>
