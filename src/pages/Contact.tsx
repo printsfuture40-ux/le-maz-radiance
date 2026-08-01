@@ -1,5 +1,6 @@
 import { Phone, MapPin, Clock, ArrowRight, Mail } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import { useBooking } from "@/components/BookingProvider";
 import salonImg from "@/assets/salon-interior.jpg";
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (
@@ -22,7 +23,10 @@ const MAP_EMBED_URL =
 const MAP_DIRECTIONS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=PMXP%2BH9M+Muthiga+A+Square+Mall+Waiyaki+Way+Rungiri";
 
-const Contact = () => (
+const Contact = () => {
+  const { open: openBooking } = useBooking();
+
+  return (
   <main className="pt-24 pb-20 lg:pb-0">
     <section className="relative py-20 md:py-28 bg-charcoal text-primary-foreground text-center overflow-hidden">
       <div className="absolute inset-0 opacity-10">
