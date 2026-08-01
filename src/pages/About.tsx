@@ -1,12 +1,16 @@
 import { Heart, Award, Sparkles, Users } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import { useBooking } from "@/components/BookingProvider";
 import salonImg from "@/assets/salon-interior.jpg";
 import loungeImg from "@/assets/salon-lounge.jpg";
 import receptionImg from "@/assets/salon-reception.jpg";
 import signageImg from "@/assets/salon-signage.jpg";
 import teamImg from "@/assets/team.jpg";
 
-const About = () => (
+const About = () => {
+  const { open: openBooking } = useBooking();
+
+  return (
   <main className="pt-24 pb-20">
     {/* Hero — authentic reception / signage backdrop */}
     <section className="relative py-24 md:py-32 bg-charcoal text-primary-foreground overflow-hidden">
@@ -114,17 +118,18 @@ const About = () => (
           <p className="text-primary-foreground/70 max-w-md mx-auto mb-8">
             Every visit is a transformation. Every client, a work of art.
           </p>
-          <a
-            href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
-            target="_blank" rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => openBooking()}
             className="inline-flex px-8 py-4 bg-gold text-charcoal text-sm font-semibold tracking-wider uppercase rounded-full hover:bg-gold-light transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
           >
             Book Your Visit
-          </a>
+          </button>
         </ScrollReveal>
       </div>
     </section>
   </main>
-);
+  );
+};
 
 export default About;

@@ -8,6 +8,7 @@ import SplashScreen from "@/components/SplashScreen";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { BookingProvider } from "@/components/BookingProvider";
 
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
@@ -18,6 +19,8 @@ const About = lazy(() => import("./pages/About"));
 const Club = lazy(() => import("./pages/Club"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Products = lazy(() => import("./pages/Products"));
+const Auth = lazy(() => import("./pages/Auth"));
+const AdminBookings = lazy(() => import("./pages/AdminBookings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -39,22 +42,26 @@ const App = () => {
         <Sonner />
         {!splashDone && <SplashScreen onComplete={handleSplashComplete} />}
         <BrowserRouter>
-          <ScrollToTop />
-          <Header />
-          <Suspense fallback={<div className="min-h-screen bg-background" />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/services" element={<ServiceVault />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/club" element={<Club />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-          <Footer />
-          <WhatsAppButton />
+          <BookingProvider>
+            <ScrollToTop />
+            <Header />
+            <Suspense fallback={<div className="min-h-screen bg-background" />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/services" element={<ServiceVault />} />
+                <Route path="/portfolio" element={<Portfolio />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/club" element={<Club />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/admin/bookings" element={<AdminBookings />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+            <Footer />
+            <WhatsAppButton />
+          </BookingProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

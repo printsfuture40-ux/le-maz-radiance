@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Star, Sparkles, Users, Award, Clock } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import { useBooking } from "@/components/BookingProvider";
 import heroImg from "@/assets/hero-main.jpg";
 import braidingImg from "@/assets/braiding-service.jpg";
 import makeupImg from "@/assets/makeup-service.jpg";
@@ -15,9 +16,9 @@ import spaImg from "@/assets/spa-service.jpg";
 // "From" prices reflect the lowest price in each catalogue category.
 const services = [
   { title: "Braiding & Twists", desc: "Knotless braids, Ghana lines, twists & twist-outs crafted with precision.", price: "From KES 1,000", img: braidingImg },
-  { title: "Wigs, Weaves & Locks", desc: "Wig installation, styling, revamps, track sew & locks services.", price: "From KES 500", img: wigImg },
+  { title: "Wigs, Weaves & Locks", desc: "Wig installation, styling, revamps, track sew & locks services.", price: "From KES 1,000", img: wigImg },
   { title: "Makeup & Beauty", desc: "Full glam, face beats and refined eyebrow grooming.", price: "From KES 300", img: makeupImg },
-  { title: "Pedicure & Manicure", desc: "Pedicures, manicures, gel nails, sculpting, henna & nail art.", price: "From KES 50", img: nailImg },
+  { title: "Pedicure & Manicure", desc: "Pedicures, manicures, gel nails, sculpting, henna & nail art.", price: "From KES 500", img: nailImg },
   { title: "Kids' Hairstyles", desc: "Gentle care for little ones — from school lines to beautiful twist-outs.", price: "From KES 200", img: kidsImg },
   { title: "Extras & Treatments", desc: "Hot oil, deep treatments, undo services, dryer and detangling.", price: "From KES 200", img: spaImg },
 ];
@@ -40,7 +41,10 @@ const insights = [
   { title: "Scalp Care is Self-Care", desc: "The latest trend focuses on healthy foundations — hot oil treatments and scalp massages are now standard pre-styling rituals." },
 ];
 
-const Index = () => (
+const Index = () => {
+  const { open: openBooking } = useBooking();
+
+  return (
   <main className="pb-16 lg:pb-0">
     {/* Hero */}
     <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -71,13 +75,13 @@ const Index = () => (
           className="mt-10 flex flex-wrap gap-4"
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
         >
-          <a
-            href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
-            target="_blank" rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => openBooking()}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gold text-charcoal font-semibold text-sm tracking-wider uppercase rounded-full hover:bg-gold-light transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
           >
             Book Appointment <ArrowRight size={16} />
-          </a>
+          </button>
           <Link
             to="/services"
             className="inline-flex items-center gap-2 px-8 py-4 border border-primary-foreground/30 text-primary-foreground text-sm tracking-wider uppercase rounded-full hover:border-gold hover:text-gold transition-colors"
@@ -291,16 +295,17 @@ const Index = () => (
       <ScrollReveal>
         <h2 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold mb-6">Ready to <em className="gold-text-gradient not-italic">Shine</em>?</h2>
         <p className="text-primary-foreground/60 mb-10 max-w-md mx-auto">Book your appointment today. Walk in beautiful. Walk out stunning.</p>
-        <a
-          href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
-          target="_blank" rel="noopener noreferrer"
+        <button
+          type="button"
+          onClick={() => openBooking()}
           className="inline-flex items-center gap-2 px-10 py-4 bg-gold text-charcoal font-semibold tracking-wider uppercase rounded-full hover:bg-gold-light transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
         >
-          Book via WhatsApp <ArrowRight size={16} />
-        </a>
+          Book Your Appointment <ArrowRight size={16} />
+        </button>
       </ScrollReveal>
     </section>
   </main>
-);
+  );
+};
 
 export default Index;

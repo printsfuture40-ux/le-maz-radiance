@@ -1,5 +1,6 @@
 import { Phone, MapPin, Clock, ArrowRight, Mail } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import { useBooking } from "@/components/BookingProvider";
 import salonImg from "@/assets/salon-interior.jpg";
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (
@@ -22,7 +23,10 @@ const MAP_EMBED_URL =
 const MAP_DIRECTIONS_URL =
   "https://www.google.com/maps/dir/?api=1&destination=PMXP%2BH9M+Muthiga+A+Square+Mall+Waiyaki+Way+Rungiri";
 
-const Contact = () => (
+const Contact = () => {
+  const { open: openBooking } = useBooking();
+
+  return (
   <main className="pt-24 pb-20 lg:pb-0">
     <section className="relative py-20 md:py-28 bg-charcoal text-primary-foreground text-center overflow-hidden">
       <div className="absolute inset-0 opacity-10">
@@ -71,13 +75,13 @@ const Contact = () => (
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <a
-                href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
-                target="_blank" rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => openBooking()}
                 className="inline-flex items-center gap-2 px-7 py-3.5 bg-gold text-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-gold-light transition-all hover:shadow-[0_8px_30px_-6px_hsl(42_68%_52%/0.5)]"
               >
-                Book via WhatsApp <ArrowRight size={14} />
-              </a>
+                Book Appointment <ArrowRight size={14} />
+              </button>
               <a href="https://www.instagram.com/lemaz_beauty" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
                 className="w-12 h-12 rounded-full border border-gold/40 flex items-center justify-center text-gold hover:bg-gold hover:text-charcoal transition-all">
                 <InstagramIcon size={18} />
@@ -111,6 +115,7 @@ const Contact = () => (
       </div>
     </section>
   </main>
-);
+  );
+};
 
 export default Contact;
