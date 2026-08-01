@@ -57,14 +57,13 @@ const Header = () => {
           ))}
         </nav>
 
-        <a
-          href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          type="button"
+          onClick={() => openBooking()}
           className="hidden lg:inline-flex px-6 py-2.5 bg-gold text-charcoal text-xs font-semibold tracking-wider uppercase rounded-full hover:bg-gold-light transition-colors"
         >
           Book Now
-        </a>
+        </button>
 
         <button
           onClick={() => setOpen(!open)}
@@ -97,14 +96,16 @@ const Header = () => {
                   {link.label}
                 </Link>
               ))}
-              <a
-                href="https://wa.me/254746580502?text=Hi%20Le%27maz%2C%20I%27d%20like%20to%20book%20an%20appointment"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  openBooking();
+                }}
                 className="mt-2 px-6 py-3 bg-gold text-charcoal text-sm font-semibold tracking-wider uppercase rounded-full text-center"
               >
                 Book Now
-              </a>
+              </button>
             </nav>
           </motion.div>
         )}
