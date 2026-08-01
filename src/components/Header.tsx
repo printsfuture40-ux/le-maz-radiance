@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { useBooking } from "@/components/BookingProvider";
 import logoImg from "@/assets/lemaz-logo.png";
 
 const navLinks = [
@@ -18,6 +19,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { open: openBooking } = useBooking();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
