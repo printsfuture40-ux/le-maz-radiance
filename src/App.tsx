@@ -8,6 +8,7 @@ import SplashScreen from "@/components/SplashScreen";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { BookingProvider } from "@/components/BookingProvider";
 
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
@@ -18,6 +19,8 @@ const About = lazy(() => import("./pages/About"));
 const Club = lazy(() => import("./pages/Club"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Products = lazy(() => import("./pages/Products"));
+const Auth = lazy(() => import("./pages/Auth"));
+const AdminBookings = lazy(() => import("./pages/AdminBookings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
