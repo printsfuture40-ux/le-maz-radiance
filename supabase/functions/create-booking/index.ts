@@ -92,7 +92,7 @@ Deno.serve(async (req) => {
     const since = new Date(Date.now() - 10 * 60 * 1000).toISOString();
     const { data: dupes } = await supabase
       .from("bookings")
-      .select("id, reference, total_amount, deposit_amount, status")
+      .select("id, reference, total_amount, deposit_amount, status, access_token")
       .eq("phone", phone)
       .eq("booking_date", bookingDate)
       .gte("created_at", since)
@@ -103,6 +103,7 @@ Deno.serve(async (req) => {
         booking: {
           id: b.id,
           reference: b.reference,
+          access_token: b.access_token,
           total_amount: b.total_amount,
           deposit_amount: b.deposit_amount,
           status: b.status,
@@ -125,11 +126,12 @@ Deno.serve(async (req) => {
         notes,
         status: "pending_payment",
       })
-      .select("id, reference, total_amount, deposit_amount, status, booking_date")
+      .select("id, reference, access_token, total_amount, deposit_amount, status, booking_date")
       .single();
     if (error) throw error;
 
     return json({ booking: data });
+
   } catch (err) {
     console.error("create-booking failed", err);
     return json({ error: "We could not save your booking. Please try again." }, 500);

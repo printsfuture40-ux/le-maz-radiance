@@ -27,8 +27,14 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { booking_id: bookingId, action = "initiate" } = await req.json();
-    if (!bookingId) return json({ error: "Missing booking reference." }, 400);
+    const {
+      booking_id: bookingId,
+      access_token: accessToken,
+      action = "initiate",
+    } = await req.json();
+    if (!bookingId || typeof accessToken !== "string" || accessToken.length < 16) {
+      return json({ error: "Missing or invalid booking credentials." }, 400);
+    }
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -37,16 +43,20 @@ Deno.serve(async (req) => {
 
     const { data: booking, error: bookingError } = await supabase
       .from("bookings")
-      .select("id, reference, phone, booking_date, deposit_amount, total_amount, status")
+      .select("id, reference, phone, booking_date, deposit_amount, total_amount, status, access_token")
       .eq("id", bookingId)
       .maybeSingle();
     if (bookingError) throw bookingError;
-    if (!booking) return json({ error: "Booking not found." }, 404);
+    // Ownership proof: the caller must present the token issued at creation.
+    if (!booking || booking.access_token !== accessToken) {
+      return json({ error: "Booking not found." }, 404);
+    }
 
     if (action === "cancel") {
       await supabase.from("bookings").update({ status: "cancelled" }).eq("id", booking.id);
       return json({ status: "cancelled" });
     }
+
 
     if (booking.status === "confirmed") {
       return json({ status: "confirmed", reference: booking.reference, already: true });
