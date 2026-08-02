@@ -60,12 +60,15 @@ const AdminBookings = () => {
         navigate("/auth", { replace: true });
         return;
       }
-      const { data } = await supabase.rpc("has_role", {
-        _user_id: sessionData.session.user.id,
-        _role: "admin",
-      });
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", sessionData.session.user.id)
+        .eq("role", "admin")
+        .maybeSingle();
       if (!active) return;
       setAllowed(Boolean(data));
+
       setChecking(false);
     })();
     return () => {

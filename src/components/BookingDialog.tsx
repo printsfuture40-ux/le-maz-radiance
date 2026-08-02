@@ -77,15 +77,14 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
 
   useEffect(() => {
     let active = true;
-    supabase
-      .rpc("get_unavailable_dates")
-      .then(({ data }) => {
-        if (active && data) setUnavailable(data.map((d: { booking_date: string }) => d.booking_date));
-      });
+    supabase.functions.invoke("booking-availability").then(({ data }) => {
+      if (active && Array.isArray(data?.dates)) setUnavailable(data.dates as string[]);
+    });
     return () => {
       active = false;
     };
   }, []);
+
 
   const total = useMemo(
     () => selected.reduce((sum, name) => sum + (priceByName.get(name)?.price ?? 0), 0),
