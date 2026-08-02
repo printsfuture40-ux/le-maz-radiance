@@ -70,6 +70,8 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
     date: string;
   } | null>(null);
   const [bookingId, setBookingId] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
 
   useEffect(() => {
     setSelected(preselect);
@@ -116,6 +118,8 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
     setFormError(null);
     setConfirmation(null);
     setBookingId(null);
+    setAccessToken(null);
+
   };
 
   const handleClose = (next: boolean) => {
