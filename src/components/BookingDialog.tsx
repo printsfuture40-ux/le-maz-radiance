@@ -70,6 +70,8 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
     date: string;
   } | null>(null);
   const [bookingId, setBookingId] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
 
   useEffect(() => {
     setSelected(preselect);
@@ -77,15 +79,14 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
 
   useEffect(() => {
     let active = true;
-    supabase
-      .rpc("get_unavailable_dates")
-      .then(({ data }) => {
-        if (active && data) setUnavailable(data.map((d: { booking_date: string }) => d.booking_date));
-      });
+    supabase.functions.invoke("booking-availability").then(({ data }) => {
+      if (active && Array.isArray(data?.dates)) setUnavailable(data.dates as string[]);
+    });
     return () => {
       active = false;
     };
   }, []);
+
 
   const total = useMemo(
     () => selected.reduce((sum, name) => sum + (priceByName.get(name)?.price ?? 0), 0),
@@ -117,6 +118,8 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
     setFormError(null);
     setConfirmation(null);
     setBookingId(null);
+    setAccessToken(null);
+
   };
 
   const handleClose = (next: boolean) => {
@@ -145,7 +148,8 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
     setFormError(null);
     try {
       let id = bookingId;
-      if (!id) {
+      let token = accessToken;
+      if (!id || !token) {
         const { data, error } = await supabase.functions.invoke("create-booking", {
           body: {
             full_name: fullName.trim(),
@@ -157,12 +161,15 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
         });
         if (error || data?.error) throw new Error(data?.error ?? "We could not save your booking.");
         id = data.booking.id as string;
+        token = data.booking.access_token as string;
         setBookingId(id);
+        setAccessToken(token);
       }
 
       const { data: pay, error: payError } = await supabase.functions.invoke("process-payment", {
-        body: { booking_id: id, action: "initiate" },
+        body: { booking_id: id, access_token: token, action: "initiate" },
       });
+
       if (payError || pay?.error) throw new Error(pay?.error ?? "Payment could not be processed.");
 
       if (pay.status === "confirmed") {
