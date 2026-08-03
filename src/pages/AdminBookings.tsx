@@ -1,7 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -11,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { formatKES } from "@/data/services";
-import { supabase } from "@/integrations/supabase/client";
+import { adminInvoke, adminLogout, verifyAdminSession } from "@/lib/adminSession";
 
 type BookingStatus = "pending_payment" | "confirmed" | "cancelled" | "completed";
 
@@ -46,31 +55,33 @@ const AdminBookings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [checking, setChecking] = useState(true);
-  const [allowed, setAllowed] = useState(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | BookingStatus>("all");
   const [busyId, setBusyId] = useState<string | null>(null);
 
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [pwError, setPwError] = useState<string | null>(null);
+  const [pwSaving, setPwSaving] = useState(false);
+
+  const signOut = useCallback(async () => {
+    await adminLogout();
+    navigate("/auth", { replace: true });
+  }, [navigate]);
+
   useEffect(() => {
     let active = true;
-    (async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
-      if (!sessionData.session) {
+    verifyAdminSession().then((valid) => {
+      if (!active) return;
+      if (!valid) {
         navigate("/auth", { replace: true });
         return;
       }
-      const { data } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", sessionData.session.user.id)
-        .eq("role", "admin")
-        .maybeSingle();
-      if (!active) return;
-      setAllowed(Boolean(data));
-
       setChecking(false);
-    })();
+    });
     return () => {
       active = false;
     };
@@ -78,32 +89,65 @@ const AdminBookings = () => {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("bookings")
-      .select("*")
-      .order("booking_date", { ascending: true });
+    const { data, error } = await adminInvoke<{ bookings: Booking[] }>("admin-bookings", {
+      action: "list",
+    });
     if (error) {
-      toast({ title: "Could not load bookings", description: error.message, variant: "destructive" });
+      toast({ title: "Could not load bookings", description: error, variant: "destructive" });
     } else {
-      setBookings((data ?? []) as unknown as Booking[]);
+      setBookings(data?.bookings ?? []);
     }
     setLoading(false);
   }, [toast]);
 
   useEffect(() => {
-    if (allowed) load();
-  }, [allowed, load]);
+    if (!checking) load();
+  }, [checking, load]);
 
   const update = async (id: string, status: BookingStatus) => {
     setBusyId(id);
-    const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
+    const { error } = await adminInvoke("admin-bookings", {
+      action: "update-status",
+      id,
+      status,
+    });
     if (error) {
-      toast({ title: "Update failed", description: error.message, variant: "destructive" });
+      toast({ title: "Update failed", description: error, variant: "destructive" });
     } else {
       setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
       toast({ title: `Booking marked ${statusLabel[status].toLowerCase()}.` });
     }
     setBusyId(null);
+  };
+
+  const changePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pwSaving) return;
+    setPwError(null);
+    if (newPassword.trim().length < 6) {
+      setPwError("New password must be at least 6 characters.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPwError("New passwords do not match.");
+      return;
+    }
+    setPwSaving(true);
+    const { error } = await adminInvoke("admin-auth", {
+      action: "change-password",
+      current_password: currentPassword,
+      new_password: newPassword,
+    });
+    setPwSaving(false);
+    if (error) {
+      setPwError(error);
+      return;
+    }
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setSettingsOpen(false);
+    toast({ title: "Password updated", description: "Other devices have been signed out." });
   };
 
   const visible = useMemo(
@@ -115,27 +159,6 @@ const AdminBookings = () => {
     return (
       <main className="min-h-screen flex items-center justify-center">
         <Loader2 className="animate-spin text-gold" />
-      </main>
-    );
-  }
-
-  if (!allowed) {
-    return (
-      <main className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center">
-        <h1 className="font-display text-2xl font-semibold">Access restricted</h1>
-        <p className="text-sm text-muted-foreground max-w-sm">
-          This account does not have booking management access. Please contact the salon administrator.
-        </p>
-        <Button
-          variant="outline"
-          className="rounded-full"
-          onClick={async () => {
-            await supabase.auth.signOut();
-            navigate("/auth", { replace: true });
-          }}
-        >
-          Sign out
-        </Button>
       </main>
     );
   }
@@ -165,11 +188,17 @@ const AdminBookings = () => {
               variant="outline"
               size="icon"
               className="rounded-full"
+              aria-label="Settings"
+              onClick={() => setSettingsOpen(true)}
+            >
+              <Settings size={16} />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full"
               aria-label="Sign out"
-              onClick={async () => {
-                await supabase.auth.signOut();
-                navigate("/auth", { replace: true });
-              }}
+              onClick={signOut}
             >
               <LogOut size={16} />
             </Button>
@@ -256,6 +285,62 @@ const AdminBookings = () => {
           </div>
         )}
       </div>
+
+      <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl">Settings</DialogTitle>
+            <DialogDescription>
+              Update the dashboard password. All other devices will be signed out.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={changePassword} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="current-password">Current password</Label>
+              <Input
+                id="current-password"
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="new-password">New password</Label>
+              <Input
+                id="new-password"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                minLength={6}
+                autoComplete="new-password"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirm-password">Confirm new password</Label>
+              <Input
+                id="confirm-password"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                minLength={6}
+                autoComplete="new-password"
+              />
+            </div>
+            {pwError && <p className="text-sm text-destructive">{pwError}</p>}
+            <Button
+              type="submit"
+              disabled={pwSaving}
+              className="w-full h-11 rounded-full bg-gold text-charcoal hover:bg-gold-light uppercase tracking-wider text-xs font-semibold"
+            >
+              {pwSaving ? <Loader2 size={16} className="animate-spin" /> : "Update Password"}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 };
