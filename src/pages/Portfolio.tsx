@@ -42,7 +42,33 @@ const portfolio = [
 
 const Portfolio = () => {
   const [filter, setFilter] = useState<string>("All");
-  const filtered = filter === "All" ? portfolio : portfolio.filter((p) => p.cat === filter);
+  const [items, setItems] = useState(portfolio);
+
+  // Owner-managed photos replace the default gallery once any are published.
+  useEffect(() => {
+    let active = true;
+    supabase
+      .from("portfolio_items")
+      .select("category, title, image_url")
+      .eq("hidden", false)
+      .order("display_order", { ascending: true })
+      .then(({ data }) => {
+        if (!active || !data || data.length === 0) return;
+        setItems(
+          data.map((row) => ({
+            src: row.image_url,
+            cat: row.category,
+            title: row.title || row.category,
+          })),
+        );
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const filtered = filter === "All" ? items : items.filter((p) => p.cat === filter);
+
 
   return (
     <main className="pt-24 pb-20">
