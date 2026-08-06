@@ -43,7 +43,8 @@ const Auth = () => {
     }
 
     setAdminToken(data.token);
-    navigate("/admin/bookings", { replace: true });
+    navigate(from, { replace: true });
+
   };
 
   return (
