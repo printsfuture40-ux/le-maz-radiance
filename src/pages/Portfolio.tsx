@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
+
 import ScrollReveal from "@/components/ScrollReveal";
 import braidingImg from "@/assets/braiding-service.jpg";
 import wigImg from "@/assets/wig-service.jpg";
