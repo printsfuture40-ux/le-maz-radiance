@@ -21,7 +21,9 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Products = lazy(() => import("./pages/Products"));
 const Auth = lazy(() => import("./pages/Auth"));
 const AdminBookings = lazy(() => import("./pages/AdminBookings"));
+const AdminManage = lazy(() => import("./pages/AdminManage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+
 
 const queryClient = new QueryClient();
 
