@@ -17,11 +17,15 @@ const TikTokIcon = ({ size = 18 }: { size?: number }) => (
   </svg>
 );
 
-// Plus Code PMXP+H9M, Muthiga — A Square Mall, Waiyaki Way, Rungiri.
+// A-Square Mall, Waiyaki Way, Muthiga (-1.2510343, 36.6859223).
 const MAP_EMBED_URL =
-  "https://www.google.com/maps?q=PMXP%2BH9M+Muthiga,+A+Square+Mall+Waiyaki+Way,+Rungiri&hl=en&z=18&output=embed";
+  "https://www.google.com/maps?q=A-Square+Mall,+Waiyaki+Way,+Muthiga&ll=-1.2510343,36.6859223&hl=en&z=17&output=embed";
 const MAP_DIRECTIONS_URL =
-  "https://www.google.com/maps/dir/?api=1&destination=PMXP%2BH9M+Muthiga+A+Square+Mall+Waiyaki+Way+Rungiri";
+  "https://www.google.com/maps/dir/?api=1&destination=-1.2510343,36.6859223&destination_place_id=ChIJH5_SAgAfLxgR eOW8sZl7eCU".replace(
+    " ",
+    "",
+  );
+
 
 const Contact = () => {
   const { open: openBooking } = useBooking();
