@@ -20,11 +20,8 @@ const TikTokIcon = ({ size = 18 }: { size?: number }) => (
 // A-Square Mall, Waiyaki Way, Muthiga (-1.2510343, 36.6859223).
 const MAP_EMBED_URL =
   "https://www.google.com/maps?q=A-Square+Mall,+Waiyaki+Way,+Muthiga&ll=-1.2510343,36.6859223&hl=en&z=17&output=embed";
-const MAP_DIRECTIONS_URL =
-  "https://www.google.com/maps/dir/?api=1&destination=-1.2510343,36.6859223&destination_place_id=ChIJH5_SAgAfLxgR eOW8sZl7eCU".replace(
-    " ",
-    "",
-  );
+const MAP_DIRECTIONS_URL = "https://maps.app.goo.gl/5751WHGg7nuBZCQm7";
+
 
 
 const Contact = () => {
