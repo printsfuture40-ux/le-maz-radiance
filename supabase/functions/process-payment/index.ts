@@ -126,24 +126,6 @@ Deno.serve(async (req) => {
         account_reference: settings?.account_reference || booking.reference,
       },
     });
-
-
-    // Simulated settlement — mirrors what the Daraja callback will do.
-    const providerRef = `SIM-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
-    await supabase
-      .from("payments")
-      .update({ status: "succeeded", provider_ref: providerRef })
-      .eq("id", payment.id);
-    await supabase.from("bookings").update({ status: "confirmed" }).eq("id", booking.id);
-
-    return json({
-      status: "confirmed",
-      reference: booking.reference,
-      provider_ref: providerRef,
-      deposit_amount: booking.deposit_amount,
-      total_amount: booking.total_amount,
-      booking_date: booking.booking_date,
-    });
   } catch (err) {
     console.error("process-payment failed", err);
     return json({ error: "Payment could not be processed. Please try again." }, 500);
