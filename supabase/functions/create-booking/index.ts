@@ -150,10 +150,13 @@ Deno.serve(async (req) => {
         full_name: fullName,
         phone,
         services,
+        guests,
         total_amount: total,
         deposit_amount: deposit,
         booking_date: bookingDate,
         notes,
+        payment_method: "manual",
+
         status: "pending_payment",
       })
       .select("id, reference, access_token, total_amount, deposit_amount, status, booking_date")
