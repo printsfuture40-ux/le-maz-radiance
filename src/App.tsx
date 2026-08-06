@@ -11,6 +11,8 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { BookingProvider } from "@/components/BookingProvider";
 
 import ScrollToTop from "@/components/ScrollToTop";
+import AdminGuard from "@/components/AdminGuard";
+
 import Index from "./pages/Index";
 
 const ServiceVault = lazy(() => import("./pages/ServiceVault"));
@@ -21,7 +23,9 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Products = lazy(() => import("./pages/Products"));
 const Auth = lazy(() => import("./pages/Auth"));
 const AdminBookings = lazy(() => import("./pages/AdminBookings"));
+const AdminManage = lazy(() => import("./pages/AdminManage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+
 
 const queryClient = new QueryClient();
 
@@ -55,7 +59,23 @@ const App = () => {
                 <Route path="/club" element={<Club />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/admin/bookings" element={<AdminBookings />} />
+                <Route
+                  path="/admin/bookings"
+                  element={
+                    <AdminGuard>
+                      <AdminBookings />
+                    </AdminGuard>
+                  }
+                />
+                <Route
+                  path="/admin/manage"
+                  element={
+                    <AdminGuard>
+                      <AdminManage />
+                    </AdminGuard>
+                  }
+                />
+
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

@@ -13,7 +13,7 @@ type InvokeResult<T> = { data: T | null; error: string | null; status?: number }
 
 /** Calls an admin edge function with the stored session token attached. */
 export async function adminInvoke<T>(
-  fn: "admin-auth" | "admin-bookings",
+  fn: "admin-auth" | "admin-bookings" | "admin-content",
   body: Record<string, unknown>,
 ): Promise<InvokeResult<T>> {
   const token = getAdminToken();

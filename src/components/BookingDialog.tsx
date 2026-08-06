@@ -68,6 +68,12 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
     deposit: number;
     total: number;
     date: string;
+    instructions?: {
+      business_name: string;
+      paybill: string;
+      till: string;
+      account_reference: string;
+    };
   } | null>(null);
   const [bookingId, setBookingId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -172,12 +178,13 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
 
       if (payError || pay?.error) throw new Error(pay?.error ?? "Payment could not be processed.");
 
-      if (pay.status === "confirmed") {
+      if (pay.status === "confirmed" || pay.status === "manual") {
         setConfirmation({
           reference: pay.reference,
           deposit: pay.deposit_amount ?? deposit,
           total: pay.total_amount ?? total,
           date: format(date, "EEEE, d MMMM yyyy"),
+          instructions: pay.payment_instructions,
         });
         setStep("confirmed");
       } else {
@@ -354,7 +361,7 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
             <DialogHeader>
               <DialogTitle className="font-display text-2xl">Review Your Booking</DialogTitle>
               <DialogDescription>
-                Confirm the details below, then secure your slot with a 35% deposit.
+                Confirm the details below, then pay the 35% deposit to secure your slot.
               </DialogDescription>
             </DialogHeader>
 
@@ -422,7 +429,7 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
                   disabled={submitting}
                   className="flex-1 rounded-full bg-gold text-charcoal hover:bg-gold-light uppercase tracking-wider text-xs font-semibold h-12"
                 >
-                  {submitting ? <Loader2 size={16} className="animate-spin" /> : "Pay Deposit"}
+                  {submitting ? <Loader2 size={16} className="animate-spin" /> : "Reserve & Get Payment Details"}
                 </Button>
               </div>
               <p className="text-[11px] text-muted-foreground text-center flex items-center justify-center gap-1.5">
@@ -435,9 +442,9 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
         {step === "confirmed" && confirmation && (
           <>
             <DialogHeader>
-              <DialogTitle className="font-display text-2xl">Booking Confirmed</DialogTitle>
+              <DialogTitle className="font-display text-2xl">Booking Reserved</DialogTitle>
               <DialogDescription>
-                We can't wait to see you. A member of our team will be in touch if anything changes.
+                Send your deposit using the details below — we confirm your slot as soon as it lands.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-5 pt-2">
@@ -445,13 +452,42 @@ const BookingDialog = ({ open, onOpenChange, preselect = [] }: Props) => {
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">Booking Reference</p>
                 <p className="font-display text-2xl font-bold text-gold mt-1">{confirmation.reference}</p>
               </div>
+              {confirmation.instructions && (
+                <div className="rounded-2xl bg-charcoal text-primary-foreground p-5 space-y-3">
+                  <p className="text-[11px] uppercase tracking-ultra-wide text-gold">
+                    M-Pesa Deposit — {formatKES(confirmation.deposit)}
+                  </p>
+                  {confirmation.instructions.paybill && (
+                    <div className="flex justify-between text-sm">
+                      <span className="opacity-70">PayBill</span>
+                      <span className="font-semibold">{confirmation.instructions.paybill}</span>
+                    </div>
+                  )}
+                  {confirmation.instructions.till && (
+                    <div className="flex justify-between text-sm">
+                      <span className="opacity-70">Till</span>
+                      <span className="font-semibold">{confirmation.instructions.till}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-sm">
+                    <span className="opacity-70">Account / Reference</span>
+                    <span className="font-semibold">
+                      {confirmation.instructions.account_reference || confirmation.reference}
+                    </span>
+                  </div>
+                  <p className="text-[11px] opacity-70 leading-relaxed pt-1">
+                    Automated in-app payment is being finalised. For now, pay via M-Pesa and send your
+                    confirmation message to 0746 580502 — your booking is confirmed once we verify it.
+                  </p>
+                </div>
+              )}
               <div className="rounded-2xl border border-border p-4 space-y-2 text-sm">
                 <div className="flex justify-between gap-4">
                   <span className="text-muted-foreground">Date</span>
                   <span className="font-medium text-right">{confirmation.date}</span>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <span className="text-muted-foreground">Deposit paid</span>
+                  <span className="text-muted-foreground">Deposit due</span>
                   <span className="font-medium">{formatKES(confirmation.deposit)}</span>
                 </div>
                 <div className="flex justify-between gap-4">
