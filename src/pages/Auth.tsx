@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Loader2, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,8 @@ import { adminInvoke, setAdminToken, verifyAdminSession } from "@/lib/adminSessi
 
 const Auth = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = (location.state as { from?: string } | null)?.from ?? "/admin/bookings";
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -15,12 +17,13 @@ const Auth = () => {
   useEffect(() => {
     let active = true;
     verifyAdminSession().then((valid) => {
-      if (active && valid) navigate("/admin/bookings", { replace: true });
+      if (active && valid) navigate(from, { replace: true });
     });
     return () => {
       active = false;
     };
-  }, [navigate]);
+  }, [navigate, from]);
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
