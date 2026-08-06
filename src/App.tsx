@@ -11,6 +11,8 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { BookingProvider } from "@/components/BookingProvider";
 
 import ScrollToTop from "@/components/ScrollToTop";
+import AdminGuard from "@/components/AdminGuard";
+
 import Index from "./pages/Index";
 
 const ServiceVault = lazy(() => import("./pages/ServiceVault"));
