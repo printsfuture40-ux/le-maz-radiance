@@ -81,8 +81,10 @@ export type Database = {
           created_at: string
           deposit_amount: number
           full_name: string
+          guests: Json
           id: string
           notes: string | null
+          payment_method: string
           phone: string
           reference: string
           services: Json
@@ -96,8 +98,10 @@ export type Database = {
           created_at?: string
           deposit_amount?: number
           full_name: string
+          guests?: Json
           id?: string
           notes?: string | null
+          payment_method?: string
           phone: string
           reference: string
           services?: Json
@@ -111,13 +115,63 @@ export type Database = {
           created_at?: string
           deposit_amount?: number
           full_name?: string
+          guests?: Json
           id?: string
           notes?: string | null
+          payment_method?: string
           phone?: string
           reference?: string
           services?: Json
           status?: Database["public"]["Enums"]["booking_status"]
           total_amount?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payment_settings: {
+        Row: {
+          account_reference: string
+          automation_mode: string
+          business_name: string
+          callback_url: string
+          created_at: string
+          daraja_consumer_key: string
+          daraja_consumer_secret: string
+          daraja_passkey: string
+          deposit_percent: number
+          id: boolean
+          paybill: string
+          till: string
+          updated_at: string
+        }
+        Insert: {
+          account_reference?: string
+          automation_mode?: string
+          business_name?: string
+          callback_url?: string
+          created_at?: string
+          daraja_consumer_key?: string
+          daraja_consumer_secret?: string
+          daraja_passkey?: string
+          deposit_percent?: number
+          id?: boolean
+          paybill?: string
+          till?: string
+          updated_at?: string
+        }
+        Update: {
+          account_reference?: string
+          automation_mode?: string
+          business_name?: string
+          callback_url?: string
+          created_at?: string
+          daraja_consumer_key?: string
+          daraja_consumer_secret?: string
+          daraja_passkey?: string
+          deposit_percent?: number
+          id?: boolean
+          paybill?: string
+          till?: string
           updated_at?: string
         }
         Relationships: []
@@ -165,6 +219,87 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      portfolio_items: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          display_order: number
+          hidden: boolean
+          id: string
+          image_url: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string
+          display_order?: number
+          hidden?: boolean
+          id?: string
+          image_url: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          display_order?: number
+          hidden?: boolean
+          id?: string
+          image_url?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          available: boolean
+          category: string
+          created_at: string
+          description: string
+          display_order: number
+          featured: boolean
+          hidden: boolean
+          id: string
+          image_url: string | null
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          available?: boolean
+          category?: string
+          created_at?: string
+          description?: string
+          display_order?: number
+          featured?: boolean
+          hidden?: boolean
+          id?: string
+          image_url?: string | null
+          name: string
+          price?: number
+          updated_at?: string
+        }
+        Update: {
+          available?: boolean
+          category?: string
+          created_at?: string
+          description?: string
+          display_order?: number
+          featured?: boolean
+          hidden?: boolean
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {
