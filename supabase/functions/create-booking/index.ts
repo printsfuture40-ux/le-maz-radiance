@@ -39,16 +39,25 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const fullName = String(body.full_name ?? "").trim();
     const phoneRaw = String(body.phone ?? "").trim();
-    const serviceNames: string[] = Array.isArray(body.services) ? body.services.map(String) : [];
     const bookingDate = String(body.booking_date ?? "").trim();
     const notes = body.notes ? String(body.notes).trim().slice(0, 1000) : null;
+
+    // Guests: one entry per person, each with their own service selection.
+    // Legacy single-person payloads (`services: string[]`) are still accepted.
+    type GuestInput = { name?: unknown; services?: unknown };
+    const rawGuests: GuestInput[] = Array.isArray(body.guests) && body.guests.length > 0
+      ? body.guests
+      : [{ name: fullName, services: body.services }];
+
+    if (rawGuests.length > 10) {
+      return json({ error: "You can book for up to 10 people at a time." }, 400);
+    }
 
     if (fullName.length < 2 || fullName.length > 120) {
       return json({ error: "Please enter your full name." }, 400);
     }
     const phone = normalisePhone(phoneRaw);
     if (!phone) return json({ error: "Please enter a valid Kenyan phone number." }, 400);
-    if (serviceNames.length === 0) return json({ error: "Please select at least one service." }, 400);
 
     if (!/^\d{4}-\d{2}-\d{2}$/.test(bookingDate)) {
       return json({ error: "Please choose a valid booking date." }, 400);
@@ -64,13 +73,34 @@ Deno.serve(async (req) => {
 
     // Server-side pricing — the client never dictates amounts.
     const services: { name: string; price: number }[] = [];
-    for (const name of serviceNames) {
-      const price = PRICES[name];
-      if (price === undefined) return json({ error: `Unknown service: ${name}` }, 400);
-      services.push({ name, price });
+    const guests: { name: string; services: { name: string; price: number }[]; subtotal: number }[] = [];
+
+    for (const [index, guest] of rawGuests.entries()) {
+      const guestName = String(guest?.name ?? "").trim().slice(0, 120) ||
+        (index === 0 ? fullName : `Guest ${index + 1}`);
+      const names: string[] = Array.isArray(guest?.services) ? guest.services.map(String) : [];
+      if (names.length === 0) {
+        return json({ error: `Please select at least one service for ${guestName}.` }, 400);
+      }
+      const guestServices: { name: string; price: number }[] = [];
+      for (const name of names) {
+        const price = PRICES[name];
+        if (price === undefined) return json({ error: `Unknown service: ${name}` }, 400);
+        guestServices.push({ name, price });
+        services.push({ name, price });
+      }
+      guests.push({
+        name: guestName,
+        services: guestServices,
+        subtotal: guestServices.reduce((sum, s) => sum + s.price, 0),
+      });
     }
+
+    if (services.length === 0) return json({ error: "Please select at least one service." }, 400);
+
     const total = services.reduce((sum, s) => sum + s.price, 0);
     const deposit = Math.round(total * DEPOSIT_RATE);
+
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
