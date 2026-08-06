@@ -76,9 +76,21 @@ Deno.serve(async (req) => {
       return json({ error: "That date just filled up. Please choose another day." }, 409);
     }
 
+    // Owner-controlled mode: manual (PayBill/Till), automatic (Daraja), or hybrid.
+    const { data: settings } = await supabase
+      .from("payment_settings")
+      .select(
+        "business_name, paybill, till, account_reference, automation_mode, daraja_consumer_key, daraja_consumer_secret",
+      )
+      .eq("id", true)
+      .maybeSingle();
+
+    const mode = settings?.automation_mode ?? "manual";
     const darajaConfigured = Boolean(
-      Deno.env.get("MPESA_CONSUMER_KEY") && Deno.env.get("MPESA_CONSUMER_SECRET"),
+      (settings?.daraja_consumer_key && settings?.daraja_consumer_secret) ||
+        (Deno.env.get("MPESA_CONSUMER_KEY") && Deno.env.get("MPESA_CONSUMER_SECRET")),
     );
+    const useDaraja = mode !== "manual" && darajaConfigured;
 
     const { data: payment, error: paymentError } = await supabase
       .from("payments")
@@ -87,17 +99,34 @@ Deno.serve(async (req) => {
         provider: "mpesa",
         amount: booking.deposit_amount,
         status: "pending",
-        raw_payload: { mode: darajaConfigured ? "daraja" : "simulated" },
+        raw_payload: { mode: useDaraja ? "daraja" : "manual" },
       })
       .select("id")
       .single();
     if (paymentError) throw paymentError;
 
-    if (darajaConfigured) {
+    if (useDaraja) {
       // Placeholder for the live Daraja STK Push. Once implemented, return
       // `status: "pending"` here and let the callback confirm the booking.
       return json({ status: "pending", payment_id: payment.id });
     }
+
+    // Manual settlement: the client pays via PayBill/Till and the salon confirms.
+    return json({
+      status: "manual",
+      payment_id: payment.id,
+      reference: booking.reference,
+      deposit_amount: booking.deposit_amount,
+      total_amount: booking.total_amount,
+      booking_date: booking.booking_date,
+      payment_instructions: {
+        business_name: settings?.business_name ?? "Le'maz Beauty Studio",
+        paybill: settings?.paybill ?? "880100",
+        till: settings?.till ?? "",
+        account_reference: settings?.account_reference || booking.reference,
+      },
+    });
+
 
     // Simulated settlement — mirrors what the Daraja callback will do.
     const providerRef = `SIM-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
